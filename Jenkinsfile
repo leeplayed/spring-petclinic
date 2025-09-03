@@ -46,7 +46,7 @@ pipeline {
     }
     stage('Publish Over SSH') {
       steps {
-        sshPublisher(publishers: [sshPublisherDesc(configName: 'Target', 
+        sshPublisher(publishers: [sshPublisherDesc(configName: 'target', 
         transfers: [sshTransfer(cleanRemote: false, 
         excludes: '', 
         execCommand: '''
