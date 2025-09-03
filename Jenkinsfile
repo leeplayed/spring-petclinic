@@ -6,6 +6,10 @@ pipeline {
     jdk "JDK17"
   }
 
+  enviroment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerCerdentials')
+  }
+
   stages{
     stage('Git Clone'){
       steps {
@@ -23,6 +27,16 @@ pipeline {
         docker build -t leeplayed/spring-petclinic:$BUILD_NUMBER .
         docker tag leeplayed/spring-petclinic:$BUILD_NUMBER leeplayed/spring-petclinic:latest
         """
+      }
+    }
+    stage('Docker Hub Login') {
+      steps {
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+      }
+    }
+    stage('Docker Image Push') {
+      steps {
+        sh 'docker push leeplayed/spring-petclinic:latest'
       }
     }
   }
