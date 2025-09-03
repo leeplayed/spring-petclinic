@@ -41,7 +41,7 @@ pipeline {
     }
     stage('Docker Image Remove') {
       steps {
-        sh 'docker rmi leeplayed/spring-petclinic:$BUILD_NUMBE leeplayed/spring-petclinic:latest'
+        sh 'docker rmi leeplayed/spring-petclinic:$BUILD_NUMBER leeplayed/spring-petclinic:latest'
       }
     }
     stage('Publish Over SSH') {
