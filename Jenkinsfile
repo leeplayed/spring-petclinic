@@ -39,6 +39,11 @@ pipeline {
         sh 'docker push leeplayed/spring-petclinic:latest'
       }
     }
+    stage('Docker Image Remove') {
+      steps {
+        sh 'docker rmi leeplayed/spring-petclinic:$BUILD_NUMBE leeplayed/spring-petclinic:latest'
+      }
+    }
     stage('Publish Over SSH') {
       steps {
         sshPublisher(publishers: [sshPublisherDesc(configName: 'Target', 
