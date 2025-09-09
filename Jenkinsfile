@@ -66,8 +66,6 @@ pipeline {
         usePromotionTimestamp: false, 
         useWorkspaceInPromotion: false, 
         verbose: false)])
-      }
-      steps {
         sshPublisher(publishers: [sshPublisherDesc(configName: 'web02', 
         transfers: [sshTransfer(cleanRemote: false, 
         excludes: '', 
