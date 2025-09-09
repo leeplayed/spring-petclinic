@@ -46,7 +46,7 @@ pipeline {
     }
     stage('Publish Over SSH') {
       steps {
-        sshPublisher(publishers: [sshPublisherDesc(configName: 'target', 
+        sshPublisher(publishers: [sshPublisherDesc(configName: 'web01', 
         transfers: [sshTransfer(cleanRemote: false, 
         excludes: '', 
         execCommand: '''
@@ -61,7 +61,29 @@ pipeline {
         patternSeparator: '[, ]+', 
         remoteDirectory: '', 
         remoteDirectorySDF: false, 
-        removePrefix: 'target', 
+        removePrefix: 'web01', 
+        sourceFiles: '')], 
+        usePromotionTimestamp: false, 
+        useWorkspaceInPromotion: false, 
+        verbose: false)])
+      }
+      steps {
+        sshPublisher(publishers: [sshPublisherDesc(configName: 'web02', 
+        transfers: [sshTransfer(cleanRemote: false, 
+        excludes: '', 
+        execCommand: '''
+        docker rm -f $(docker ps -aq)
+        docker rmi $(docker images -q)
+        docker run -itd -p 8080:8080 --name=spring-petclinic leeplayed/spring-petclinic:latest
+        ''', 
+        execTimeout: 120000, 
+        flatten: false, 
+        makeEmptyDirs: false, 
+        noDefaultExcludes: false, 
+        patternSeparator: '[, ]+', 
+        remoteDirectory: '', 
+        remoteDirectorySDF: false, 
+        removePrefix: 'web02', 
         sourceFiles: '')], 
         usePromotionTimestamp: false, 
         useWorkspaceInPromotion: false, 
