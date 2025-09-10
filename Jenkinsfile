@@ -44,49 +44,47 @@ pipeline {
         sh 'docker rmi leeplayed/spring-petclinic:$BUILD_NUMBER leeplayed/spring-petclinic:latest'
       }
     }
-    stage('Publish Over SSH') {
-      steps {
-        sshPublisher(publishers: [sshPublisherDesc(configName: 'web01', 
-        transfers: [sshTransfer(cleanRemote: false, 
-        excludes: '', 
-        execCommand: '''
-        docker rm -f $(docker ps -aq)
-        docker rmi $(docker images -q)
-        docker run -itd -p 8080:8080 --name=spring-petclinic leeplayed/spring-petclinic:latest
-        ''', 
-        execTimeout: 120000, 
-        flatten: false, 
-        makeEmptyDirs: false, 
-        noDefaultExcludes: false, 
-        patternSeparator: '[, ]+', 
-        remoteDirectory: '', 
-        remoteDirectorySDF: false, 
-        removePrefix: 'web01', 
-        sourceFiles: '')], 
-        usePromotionTimestamp: false, 
-        useWorkspaceInPromotion: false, 
-        verbose: false)])
-        sshPublisher(publishers: [sshPublisherDesc(configName: 'web02', 
-        transfers: [sshTransfer(cleanRemote: false, 
-        excludes: '', 
-        execCommand: '''
-        docker rm -f $(docker ps -aq)
-        docker rmi $(docker images -q)
-        docker run -itd -p 8080:8080 --name=spring-petclinic leeplayed/spring-petclinic:latest
-        ''', 
-        execTimeout: 120000, 
-        flatten: false, 
-        makeEmptyDirs: false, 
-        noDefaultExcludes: false, 
-        patternSeparator: '[, ]+', 
-        remoteDirectory: '', 
-        remoteDirectorySDF: false, 
-        removePrefix: 'web02', 
-        sourceFiles: '')], 
-        usePromotionTimestamp: false, 
-        useWorkspaceInPromotion: false, 
-        verbose: false)])
-      }
-    }
+stage('SSH Publish') {
+            steps {
+                echo 'SSH Publish'
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'web01', 
+                transfers: [sshTransfer(cleanRemote: false, 
+                excludes: '', 
+                execCommand: '''
+                fuser -k 8080/tcp
+                export BUILD_ID=Petclinic-Pipeline
+                nohup java -jar /home/ubuntu/deploy/spring-petclinic-2.7.3.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
+                execTimeout: 120000, 
+                flatten: false, 
+                makeEmptyDirs: false, 
+                noDefaultExcludes: false, 
+                patternSeparator: '[, ]+', 
+                remoteDirectory: '', 
+                remoteDirectorySDF: false, 
+                removePrefix: 'web01', 
+                sourceFiles: 'web01/*.jar')], 
+                usePromotionTimestamp: false, 
+                useWorkspaceInPromotion: false, verbose: false)])
+              echo 'SSH Publish'
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'web02', 
+                transfers: [sshTransfer(cleanRemote: false, 
+                excludes: '', 
+                execCommand: '''
+                fuser -k 8080/tcp
+                export BUILD_ID=Petclinic-Pipeline
+                nohup java -jar /home/ubuntu/deploy/spring-petclinic-2.7.3.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
+                execTimeout: 120000, 
+                flatten: false, 
+                makeEmptyDirs: false, 
+                noDefaultExcludes: false, 
+                patternSeparator: '[, ]+', 
+                remoteDirectory: '', 
+                remoteDirectorySDF: false, 
+                removePrefix: 'web02', 
+                sourceFiles: 'web02/*.jar')], 
+                usePromotionTimestamp: false, 
+                useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
   }
 }
