@@ -61,11 +61,11 @@ stage('SSH Publish') {
                 patternSeparator: '[, ]+', 
                 remoteDirectory: '', 
                 remoteDirectorySDF: false, 
-                removePrefix: 'web01', 
-                sourceFiles: 'web01/*.jar')], 
+                removePrefix: 'target', 
+                sourceFiles: 'target/*.jar')], 
                 usePromotionTimestamp: false, 
                 useWorkspaceInPromotion: false, verbose: false)])
-              echo 'SSH Publish'
+                              echo 'SSH Publish'
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'web02', 
                 transfers: [sshTransfer(cleanRemote: false, 
                 excludes: '', 
@@ -80,8 +80,8 @@ stage('SSH Publish') {
                 patternSeparator: '[, ]+', 
                 remoteDirectory: '', 
                 remoteDirectorySDF: false, 
-                removePrefix: 'web02', 
-                sourceFiles: 'web02/*.jar')], 
+                removePrefix: 'target', 
+                sourceFiles: 'target/*.jar')], 
                 usePromotionTimestamp: false, 
                 useWorkspaceInPromotion: false, verbose: false)])
             }
