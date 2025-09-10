@@ -53,7 +53,7 @@ stage('SSH Publish') {
                 execCommand: '''
                 fuser -k 8080/tcp
                 export BUILD_ID=Petclinic-Pipeline
-                nohup java -jar /home/rocky9/spring-petclinic-2.7.3.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
+                nohup java -jar /home/rocky9/spring-petclinic-3.5.0-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
                 execTimeout: 300000, 
                 flatten: false, 
                 makeEmptyDirs: false, 
@@ -65,14 +65,14 @@ stage('SSH Publish') {
                 sourceFiles: 'target/*.jar')], 
                 usePromotionTimestamp: false, 
                 useWorkspaceInPromotion: false, verbose: false)])
-                              echo 'SSH Publish'
+                echo 'SSH Publish'
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'web02', 
                 transfers: [sshTransfer(cleanRemote: false, 
                 excludes: '', 
                 execCommand: '''
                 fuser -k 8080/tcp
                 export BUILD_ID=Petclinic-Pipeline
-                nohup java -jar /home/rocky9/spring-petclinic-2.7.3.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
+                nohup java -jar /home/rocky9/spring-petclinic-3.5.0-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
                 execTimeout: 300000, 
                 flatten: false, 
                 makeEmptyDirs: false, 
