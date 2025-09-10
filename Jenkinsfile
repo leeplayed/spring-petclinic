@@ -54,7 +54,7 @@ stage('SSH Publish') {
                 fuser -k 8080/tcp
                 export BUILD_ID=Petclinic-Pipeline
                 nohup java -jar /home/rocky9/spring-petclinic-2.7.3.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
-                execTimeout: 120000, 
+                execTimeout: 300000, 
                 flatten: false, 
                 makeEmptyDirs: false, 
                 noDefaultExcludes: false, 
@@ -73,7 +73,7 @@ stage('SSH Publish') {
                 fuser -k 8080/tcp
                 export BUILD_ID=Petclinic-Pipeline
                 nohup java -jar /home/rocky9/spring-petclinic-2.7.3.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
-                execTimeout: 120000, 
+                execTimeout: 300000, 
                 flatten: false, 
                 makeEmptyDirs: false, 
                 noDefaultExcludes: false, 
